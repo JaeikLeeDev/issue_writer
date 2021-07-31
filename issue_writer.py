@@ -7,9 +7,9 @@ import csv
 
 read_file = open('issues.csv', 'r')
 write_file = open('release_draft.txt', 'w')
-r = csv.reader(read_file)
+file = csv.reader(read_file)
 
-for line in r:
+for line in file:
     if line[0] == '\ufeff#' or line[0] == '#':
         header = line
     else:
