@@ -9,13 +9,22 @@ read_file = open('issues.csv', 'r')
 write_file = open('release_draft.txt', 'w')
 file = csv.reader(read_file)
 
+columns = {}
 for line in file:
     # The first row of the issue.csv
     if line[0] == '\ufeff#' or line[0] == '#':
-        header = line
+        count = 0
+        for column in line:
+            columns[column] = count
+            count+=1
     else:
-        issue = '(#{issue_no}) ({tracker}) ({category})\n-{subject}\n\n' \
-        .format(issue_no = line[0], tracker = line[1], category = line[2], subject = line[3])
+        issue = '(#{issue_no}) ({tracker}) ({category})\n-{subject}\n\n<description>\n-{description}\n<last note>\n-{last_notes}\n\n' \
+        .format(issue_no    = line[columns['\ufeff#']], \
+                tracker     = line[columns['Tracker']], \
+                category    = line[columns['Category']], \
+                subject     = line[columns['Subject']], \
+                description = line[columns['Description']], \
+                last_notes  = line[columns['Last notes']])
         write_file.write(issue)
 
 read_file.close()
